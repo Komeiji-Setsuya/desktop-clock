@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup />
+  <ItemGroup>
+    <ApplicationDefinition Update="App.xaml">
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="OtherWindows\TestWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Custom\CustomButton.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Custom\CustomCheckBox.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Custom\CustomComboBox.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Custom\CustomContextMenu.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Custom\CustomLabel.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Custom\CustomScroll.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Custom\CustomThumb.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Custom\CustomToolTip.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DcMainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="OtherWindows\MainMenu.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="OtherWindows\TestWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+</Project>

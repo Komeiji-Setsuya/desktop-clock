@@ -1,0 +1,25 @@
+﻿<Application x:Class="DesktopClock.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:DesktopClock"
+             StartupUri="DcMainWindow.xaml" Startup="Application_Startup">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ContextMenu x:Key="ContexrMenu">
+                <MenuItem Name="MiClose" Header="关闭" Click="MiClose_Click" />
+                <MenuItem Name="MiMenu" Header="设置" Click="MiMenu_Click" />
+                <MenuItem Name="MiTest" Header="测试页面" Click="MiTest_Click"/>
+            </ContextMenu>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Custom/CustomButton.xaml"/>
+                <ResourceDictionary Source="/Custom/CustomScroll.xaml"/>
+                <ResourceDictionary Source="/Custom/CustomToolTip.xaml"/>
+                <ResourceDictionary Source="/Custom/CustomContextMenu.xaml"/>
+                <ResourceDictionary Source="/Custom/CustomThumb.xaml"/>
+                <ResourceDictionary Source="/Custom/CustomLabel.xaml"/>
+                <ResourceDictionary Source="/Custom/CustomCheckBox.xaml"/>
+                <ResourceDictionary Source="/Custom/CustomComboBox.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

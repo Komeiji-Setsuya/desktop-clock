@@ -1,0 +1,117 @@
+﻿<Window x:Class="DesktopClock.DcMainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:DesktopClock"
+    xmlns:cb="clr-namespace:DesktopClock.Custom"
+    xmlns:vc="clr-namespace:DesktopClock.MiscClasses"
+    xmlns:ow="clr-namespace:DesktopClock.OtherWindows"
+    mc:Ignorable="d"
+        Title="DcMainWindow" x:Name="dcMainWindow"
+        WindowStyle="None"
+        Background="#00000000" Foreground="{x:Null}"
+        AllowsTransparency="True"
+        WindowStartupLocation="CenterScreen"
+        HorizontalAlignment="Center" VerticalAlignment="Center"
+        ResizeMode="NoResize" ShowInTaskbar="False"
+        SizeToContent="WidthAndHeight"
+        StateChanged="mainWindow_StateChanged" Activated="mainWindow_Activated" Initialized="dcMainWindow_Initialized">
+    <Window.Resources>
+        <vc:GetDcMainGridHeightToThisWidth x:Key="getDcMainGridHeightToThisWidth"/>
+        <vc:GetDcMainGridWidthToTimeFontSize x:Key="getDcMainGridWidthToTimeFontSize"/>
+        <vc:GetDateFontSize x:Key="getDateFontSize"/>
+        <vc:GetDateFontSizeToWeekFontSize x:Key="getDateFontSizeToWeekFontSize"/>
+        <vc:GetDateFontSizeToWeekMargin x:Key="getDateFontSizeToWeekMargin"/>
+    </Window.Resources>
+    <Grid x:Name="DcMainGrid" Visibility="Visible" Focusable="True"
+          Height="180"
+          Width="{Binding Height, Converter={StaticResource getDcMainGridHeightToThisWidth}, ElementName=DcMainGrid}"
+          SizeChanged="DcMainGrid_SizeChanged">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="4*"/>
+        </Grid.RowDefinitions>
+        <Label Name="Time"
+               Content="00:00:00"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Top"
+               Foreground="White"
+               FontSize="{Binding Width, Converter={StaticResource getDcMainGridWidthToTimeFontSize}, ElementName=DcMainGrid}"
+               VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="5,0,5,0"/>
+        <Label Name="Date"
+               Content="0000年00月00日"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Top"
+               Foreground="White"
+               FontSize="{Binding FontSize, Converter={StaticResource getDateFontSize}, ElementName=Time}"
+               VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Row="1" Padding="5,0,5,0"
+               FontFamily="{Binding FontFamily, ElementName=Time}"/>
+        <Label Name="Week"
+               Content="星期几"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Top"
+               Margin="{Binding FontSize, Converter={StaticResource getDateFontSizeToWeekMargin}, ElementName=Date}"
+               Foreground="White" Grid.Row="3" FontSize="{Binding FontSize, Converter={StaticResource getDateFontSizeToWeekFontSize}, ElementName=Date}"
+               Visibility="Visible" Padding="5,0,5,0"
+               FontFamily="{Binding FontFamily, ElementName=Time}"/>
+        <Border x:Name="MainBackground"
+                BorderBrush="#01FFFFFF" Background="#01000000"
+                HorizontalAlignment="Left" Height="{Binding Height, ElementName=DcMainGrid}"
+                VerticalAlignment="Top" Width="{Binding Width, ElementName=DcMainGrid}"
+                BorderThickness="1"
+                MouseLeftButtonDown="MainBackground_MouseLeftButtonDown"
+                ContextMenu="{StaticResource ContexrMenu}" MouseEnter="MainBackground_MouseEnter" MouseLeave="MainBackground_MouseLeave" MouseRightButtonUp="MainBackground_MouseRightButtonUp" MouseDown="MainBackground_MouseDown" Grid.RowSpan="3">
+            <Grid>
+                <cb:CustomButton x:Name="LockButton"
+                         Content="🔒"
+                         Width="25" Height="25"
+                         HorizontalAlignment="Right" VerticalAlignment="Top"
+                         Background="#01000000" Foreground="#7FFFFFFF"
+                         MouseOverBackground="#3F000000" MouseOverForeground="White"
+                         PressedBackground="#3F000000" PressedForeground="#7FFFFFFF"
+                         CornerRadius="3,3,3,3" Click="LockButton_Click"
+                         ToolTip="锁定" ToolTipService.InitialShowDelay="2000" ToolTipService.ShowDuration="5000"/>
+                <Border x:Name="OptionsContent"
+                      Height="25" Width="0"
+                      Background="#7F000000"
+                      Margin="0,0,0,10"
+                      CornerRadius="5"
+                      HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                    <Grid Width="100">
+                        <cb:CustomButton x:Name="OptionsOpenMainMenu"
+                                         Style="{DynamicResource MainMenuButtonStyle}"
+                                         Content="设置"
+                                         Height="25" Width="35"
+                                         FontSize="10"
+                                         Margin="25,0,40,0" Click="OptionsOpenMainMenu_Click"/>
+                        <cb:CustomButton x:Name="OptionsShutdown"
+                                         Style="{DynamicResource MainMenuButtonStyle}"
+                                         Content="关闭"
+                                         Height="25" Width="35"
+                                         FontSize="10" Margin="60,0,5,0" Click="OptionsShutdown_Click"
+                                         />
+                    </Grid>
+                </Border>
+                <cb:CustomButton x:Name="Options"
+                         Content="⚙"
+                         Width="25" Height="25"
+                         Margin="0,0,0,10"
+                         HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                         Background="#01000000" Foreground="#3FFFFFFF"
+                         MouseOverBackground="#01000000" MouseOverForeground="#7FFFFFFF"
+                         PressedBackground="#01000000" PressedForeground="#3FFFFFFF"
+                         CornerRadius="16,16,16,16"
+                         RenderTransformOrigin="0.5,0.5"
+                         Click="Options_Click"
+                         ToolTip="设置" ToolTipService.InitialShowDelay="2000" ToolTipService.ShowDuration="5000">
+                    <cb:CustomButton.RenderTransform>
+                        <RotateTransform x:Name="OptionsRotateTransform"/>
+                    </cb:CustomButton.RenderTransform>
+                </cb:CustomButton>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
+    

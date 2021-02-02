@@ -1,0 +1,27 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="DesktopClock" GeneratedClassName="DesktopClockSettings">
+  <Profiles />
+  <Settings>
+    <Setting Name="WindowSize_height" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">150</Value>
+    </Setting>
+    <Setting Name="WindowCorner" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="WindowFontFamily" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Microsoft YaHei UI</Value>
+    </Setting>
+    <Setting Name="TimeFormat" Type="System.String" Scope="User">
+      <Value Profile="(Default)">T</Value>
+    </Setting>
+    <Setting Name="DateFormat" Type="System.String" Scope="User">
+      <Value Profile="(Default)">D</Value>
+    </Setting>
+    <Setting Name="WeekFormat" Type="System.String" Scope="User">
+      <Value Profile="(Default)">dddd</Value>
+    </Setting>
+    <Setting Name="a" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

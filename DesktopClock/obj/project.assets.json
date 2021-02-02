@@ -1,0 +1,131 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "Hardcodet.NotifyIcon.Wpf/1.0.8": {
+        "type": "package",
+        "compile": {
+          "lib/net451/Hardcodet.Wpf.TaskbarNotification.dll": {}
+        },
+        "runtime": {
+          "lib/net451/Hardcodet.Wpf.TaskbarNotification.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Hardcodet.NotifyIcon.Wpf/1.0.8": {
+      "sha512": "aAwa6uNxvjJXJNtax+0TnZOvsxhiFbuKiAUjjiOf/Z6EVbZ6jUdQBR5ik1JHJhfABHFj5rhW1vgdizBizePXvQ==",
+      "type": "package",
+      "path": "hardcodet.notifyicon.wpf/1.0.8",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "hardcodet.notifyicon.wpf.1.0.8.nupkg.sha512",
+        "hardcodet.notifyicon.wpf.nuspec",
+        "lib/net35-client/Hardcodet.Wpf.TaskbarNotification.dll",
+        "lib/net35-client/Hardcodet.Wpf.TaskbarNotification.pdb",
+        "lib/net35-client/Hardcodet.Wpf.TaskbarNotification.xml",
+        "lib/net35/Hardcodet.Wpf.TaskbarNotification.dll",
+        "lib/net35/Hardcodet.Wpf.TaskbarNotification.pdb",
+        "lib/net35/Hardcodet.Wpf.TaskbarNotification.xml",
+        "lib/net40-client/Hardcodet.Wpf.TaskbarNotification.dll",
+        "lib/net40-client/Hardcodet.Wpf.TaskbarNotification.pdb",
+        "lib/net40-client/Hardcodet.Wpf.TaskbarNotification.xml",
+        "lib/net40/Hardcodet.Wpf.TaskbarNotification.dll",
+        "lib/net40/Hardcodet.Wpf.TaskbarNotification.pdb",
+        "lib/net40/Hardcodet.Wpf.TaskbarNotification.xml",
+        "lib/net45/Hardcodet.Wpf.TaskbarNotification.dll",
+        "lib/net45/Hardcodet.Wpf.TaskbarNotification.pdb",
+        "lib/net45/Hardcodet.Wpf.TaskbarNotification.xml",
+        "lib/net451/Hardcodet.Wpf.TaskbarNotification.dll",
+        "lib/net451/Hardcodet.Wpf.TaskbarNotification.pdb",
+        "lib/net451/Hardcodet.Wpf.TaskbarNotification.xml",
+        "readme.txt"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETCoreApp,Version=v3.1": [
+      "Hardcodet.NotifyIcon.Wpf >= 1.0.8"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\Lenovo\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "E:\\小型程序\\DesktopClock\\DesktopClock\\DesktopClock.csproj",
+      "projectName": "DesktopClock",
+      "projectPath": "E:\\小型程序\\DesktopClock\\DesktopClock\\DesktopClock.csproj",
+      "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
+      "outputPath": "E:\\小型程序\\DesktopClock\\DesktopClock\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "netcoreapp3.1"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "netcoreapp3.1": {
+        "targetAlias": "netcoreapp3.1",
+        "dependencies": {
+          "Hardcodet.NotifyIcon.Wpf": {
+            "target": "Package",
+            "version": "[1.0.8, )"
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          },
+          "Microsoft.WindowsDesktop.App.WPF": {
+            "privateAssets": "none"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
+      }
+    }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "已使用“.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8”而不是项目目标框架“.NETCoreApp,Version=v3.1”还原包“Hardcodet.NotifyIcon.Wpf 1.0.8”。此包可能与项目不完全兼容。",
+      "libraryId": "Hardcodet.NotifyIcon.Wpf",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    }
+  ]
+}

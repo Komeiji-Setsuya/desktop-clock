@@ -1,0 +1,158 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:DesktopClock.Custom">
+
+    <!--ComboBoxItem-->
+    <Style x:Key="DefaultMainMenuComboBoxItem" TargetType="ComboBoxItem">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <!--<Setter Property="RenderOptions.ClearTypeHint" Value="Enabled"/>-->
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBoxItem">
+                    <Grid Background="{TemplateBinding Background}" Margin="0,0.5">
+                        <Border x:Name="ItemBackground"
+                                IsHitTestVisible="False"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                Background="{TemplateBinding Background}"/>
+                        <ContentPresenter x:Name="contentPresenter"
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="ItemBackground" Property="Background" Value="#7F000000"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ItemBackground" Property="Background" Value="#3F000000"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--下拉按钮样式-->
+    <Style TargetType="{x:Type ToggleButton}" x:Key="ComboToggleButton">
+        <Setter Property="Foreground" Value="#3FFFFFFF" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Grid x:Name="Grid">
+                        <Border Background="{TemplateBinding Background}" x:Name="Bg"/>
+                        <TextBlock x:Name="Icon" Text="🔻"
+                                   Foreground="{TemplateBinding Foreground}"/>
+                    </Grid>
+                    <!--z触发器-->
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="#BFFFFFFF" />
+                            <Setter Property="Opacity" TargetName="Bg" Value="0.55" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Foreground" Value="#7FFFFFFF" />
+                            <Setter Property="Opacity" TargetName="Bg" Value="0.6" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Foreground" Value="#7FFFFFFF" />
+                            <Setter Property="Opacity" TargetName="Bg" Value="0.6" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Opacity" Value="0.5" TargetName="Grid"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--编辑状态文本框样式-->
+    <Style TargetType="{x:Type TextBox}" x:Key="EditableTextBoxStyle">
+        <!--<Setter Property="Margin" Value="1"/>
+        <Setter Property="Padding" Value="0"/>-->
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="#AAFFFFFF"/>
+        <Setter Property="SelectionBrush" Value="#7FFFFFFF" />
+        <Setter Property="SelectionTextBrush" Value="White"/>
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="CaretBrush" Value="#AAFFFFFF" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBoxBase}">
+                    <Border Name="Border"
+                            BorderThickness="1" BorderBrush="#3FFFFFFF"
+                            Background="Transparent">
+                        <ScrollViewer Margin="0" x:Name="PART_ContentHost" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush" Value="#AAFFFFFF" TargetName="Border"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.5"></Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <!--ComboBox-->
+    <Style x:Key="DefaultMainMenuComboBox" TargetType="ComboBox">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="#AAFFFFFF"/>
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="Width" Value="200"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="#AAFFFFFF"/>
+        <Setter Property="ItemContainerStyle" Value="{StaticResource DefaultMainMenuComboBoxItem}"/>
+        <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="IsEditable" Value="True"/>
+        <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ComboBox}">
+                    <Grid x:Name="PART_Root">
+                        <!--TextBox-->
+                        <TextBox x:Name="PART_EditableTextBox" Height="{TemplateBinding Height}"
+                                 Background="Transparent" Foreground="{TemplateBinding Foreground}"
+                                 CaretBrush="#AAFFFFFF" SelectionBrush="#7FFFFFFF" SelectionTextBrush="White"
+                                 HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                 FontFamily="{TemplateBinding FontFamily}" 
+                                 Text="{TemplateBinding Text}" FontSize="{TemplateBinding FontSize}" Style="{DynamicResource EditableTextBoxStyle}"/>
+                        <!--下拉按钮-->
+                        <ToggleButton x:Name="PART_DropDownToggle" IsTabStop="False"
+                                      Content="🔻" FontSize="{TemplateBinding FontSize}"
+                                      Background="Transparent"
+                                      BorderThickness="0" BorderBrush="{TemplateBinding BorderBrush}"
+                                      IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                      HorizontalAlignment="Right" Style="{DynamicResource ComboToggleButton}"/>
+                        <!--弹出下拉控件-->
+                        <Popup x:Name="PART_Popup" AllowsTransparency="True" Focusable="False"
+                               IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
+                               PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" Placement="Bottom">
+                            <Grid Width="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
+                                  MaxHeight="{Binding MaxDropDownHeight, RelativeSource={RelativeSource TemplatedParent}}">
+                                <Border x:Name="PopupBorder" BorderThickness="{TemplateBinding BorderThickness}" HorizontalAlignment="Stretch"
+                                        Height="Auto" BorderBrush="{TemplateBinding BorderBrush}"
+                                        Background="#01000000">
+                                </Border>
+                                <ScrollViewer x:Name="DropDownScrollViewer" BorderThickness="0">
+                                    <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    <!--???-->
+                                </ScrollViewer>
+                            </Grid>
+                        </Popup>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

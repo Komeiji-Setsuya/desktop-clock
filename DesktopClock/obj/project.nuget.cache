@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "dgSpecHash": "oTW5tcaJwcFcPLlt0Q2bWfGuU4BcTPjqrrKUtgiErQhgIApo03NCIUYviNAL4dLfEfh7gzI/wJWaOB82f1hc7Q==",
+  "success": true,
+  "projectFilePath": "E:\\小型程序\\DesktopClock\\DesktopClock\\DesktopClock.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Lenovo\\.nuget\\packages\\hardcodet.notifyicon.wpf\\1.0.8\\hardcodet.notifyicon.wpf.1.0.8.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "已使用“.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8”而不是项目目标框架“.NETCoreApp,Version=v3.1”还原包“Hardcodet.NotifyIcon.Wpf 1.0.8”。此包可能与项目不完全兼容。",
+      "libraryId": "Hardcodet.NotifyIcon.Wpf",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    }
+  ]
+}
