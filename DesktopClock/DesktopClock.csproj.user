@@ -7,11 +7,6 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="OtherWindows\TestWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Page Update="Custom\CustomButton.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -40,9 +35,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="OtherWindows\MainMenu.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="OtherWindows\TestWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

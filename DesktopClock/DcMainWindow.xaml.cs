@@ -13,11 +13,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using System.Runtime.InteropServices; //DllImport
+using System.Runtime.InteropServices;
 using System.Windows.Interop;
 using Microsoft.Win32;
 using System.Windows.Media.Animation;
 using DesktopClock.OtherWindows;
+using DesktopClock.MiscClasses;
 
 namespace DesktopClock
 {
@@ -56,7 +57,13 @@ namespace DesktopClock
         /// 星期显示格式
         /// </summary>
         public static string WeekFormat;
-        
+
+        //定义颜色存储变量
+        public static int ForegroundRed, ForegroundGreen, ForegroundBlue;
+        public static int BackgroundRed, BackgroundGreen, BackgroundBlue;
+        public static double ForegroundHue, ForegroundSaturation, ForegroundBrightness, ForegroundAlpha;
+        public static double BackgroundHue, BackgroundSaturation, BackgroundBrightness, BackgroundAlpha;
+
         public DcMainWindow()
         {
             InitializeComponent();
@@ -66,11 +73,9 @@ namespace DesktopClock
             ShowTimer.Tick += new EventHandler(ShowCurTimer);       //在计时器触发器上挂载ShowCurTim
             ShowTimer.Interval = new TimeSpan(0, 0, 0, 0, 50);      //设置计时器间隔为50毫秒
             ShowTimer.Start();
-
-            
         }
 
-        private void dcMainWindow_Initialized(object sender, EventArgs e)
+        private void DcMainWindow_Initialized(object sender, EventArgs e)
         {
             //初始化
             LoadSettings();
@@ -87,7 +92,39 @@ namespace DesktopClock
             TimeFormat = DesktopClockSettings.Default.TimeFormat;                                           //时间显示格式
             DateFormat = DesktopClockSettings.Default.DateFormat;                                           //日期显示格式
             WeekFormat = DesktopClockSettings.Default.WeekFormat;                                           //星期显示格式
+            //初始化前景色
+            ForegroundHue = DesktopClockSettings.Default.ForegroundHue;
+            ForegroundSaturation = DesktopClockSettings.Default.ForegroundSaturation;
+            ForegroundBrightness = DesktopClockSettings.Default.ForegroundBrightness;
+            ForegroundAlpha = DesktopClockSettings.Default.ForegroundAlpha;
+            ChangeForegroundColor();
+            //初始化背景色
+            BackgroundHue = DesktopClockSettings.Default.BackgroundHue;
+            BackgroundSaturation = DesktopClockSettings.Default.BackgroundSaturation;
+            BackgroundBrightness = DesktopClockSettings.Default.BackgroundBrightness;
+            BackgroundAlpha = DesktopClockSettings.Default.BackgroundAlpha;
+            ChangeBackgroundColor();
         }
+
+        /// <summary>
+        /// 改变前景色
+        /// </summary>
+        public void ChangeForegroundColor()
+        {
+            RGB_HSB.HSBToRGB(ForegroundHue, ForegroundSaturation, ForegroundBrightness, out ForegroundRed, out ForegroundGreen, out ForegroundBlue);
+            Time.Foreground
+                = new SolidColorBrush((Color)ColorConverter.ConvertFromString(RGB_HSB.ARGBToHex(ForegroundAlpha, ForegroundRed, ForegroundGreen, ForegroundBlue)));
+        }
+        /// <summary>
+        /// 改变背景色
+        /// </summary>
+        public void ChangeBackgroundColor()
+        {
+            RGB_HSB.HSBToRGB(BackgroundHue, BackgroundSaturation, BackgroundBrightness, out BackgroundRed, out BackgroundGreen, out BackgroundBlue);
+            FontBackground.Background
+                = new SolidColorBrush((Color)ColorConverter.ConvertFromString(RGB_HSB.ARGBToHex(BackgroundAlpha, BackgroundRed, BackgroundGreen, BackgroundBlue)));
+        }
+
 
         private void MainBackground_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -129,6 +166,7 @@ namespace DesktopClock
                 e.Handled = true;       //将事件标记为已处理
             }
         }
+
         /// <summary>
         /// ShowTime
         /// </summary>
@@ -196,17 +234,14 @@ namespace DesktopClock
             IntPtr hWnd = new WindowInteropHelper(window).Handle;
             SetWindowPos(hWnd, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
         }
-
         private void mainWindow_StateChanged(object sender, EventArgs e)
         {
             SetBottom(dcMainWindow);
         }
-
         private void mainWindow_Activated(object sender, EventArgs e)
         {
             SetBottom(dcMainWindow);
         }
-
         private void MainBackground_MouseDown(object sender, MouseButtonEventArgs e)
         {
             SetBottom(dcMainWindow);
@@ -229,7 +264,7 @@ namespace DesktopClock
         }
         private void OptionsShutdown_Click(object sender, RoutedEventArgs e)
         {
-            App.Current.Shutdown();
+            Application.Current.Shutdown();
         }
         private void OptionsOpenMainMenu_Click(object sender, RoutedEventArgs e)
         {
@@ -240,6 +275,7 @@ namespace DesktopClock
                 mainMenu.Show();
             }
         }
+
         /// <summary>
         /// 简单旋转动画
         /// </summary>
@@ -281,6 +317,11 @@ namespace DesktopClock
             storyboard.Begin();
         }
 
+        /// <summary>
+        /// 大小变化时的一点界面设计
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DcMainGrid_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             if (DcMainGrid.Height < 75)

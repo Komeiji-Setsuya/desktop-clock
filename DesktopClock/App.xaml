@@ -8,7 +8,6 @@
             <ContextMenu x:Key="ContexrMenu">
                 <MenuItem Name="MiClose" Header="关闭" Click="MiClose_Click" />
                 <MenuItem Name="MiMenu" Header="设置" Click="MiMenu_Click" />
-                <MenuItem Name="MiTest" Header="测试页面" Click="MiTest_Click"/>
             </ContextMenu>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Custom/CustomButton.xaml"/>
