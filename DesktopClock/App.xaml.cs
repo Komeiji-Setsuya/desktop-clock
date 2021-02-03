@@ -37,14 +37,6 @@ namespace DesktopClock
                 mainMenu.Show();
             } 
         }
-
-        private void MiTest_Click(object sender, RoutedEventArgs e)
-        {
-            var testWindow = new TestWindow();
-            testWindow.Show();
-        }
-
-
     }
 
 }

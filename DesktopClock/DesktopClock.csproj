@@ -4,6 +4,11 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
+    <SignAssembly>false</SignAssembly>
+    <Authors>Komeiji_Setsuya</Authors>
+    <Company />
+    <PackageIcon>Icon.ico</PackageIcon>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -12,8 +17,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="icon.ico" />
     <None Remove="icon.png" />
+    <None Include="Icon.ico">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -21,12 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="icon.ico" />
     <Resource Include="icon.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Pages\" />
   </ItemGroup>
 
   <ItemGroup>

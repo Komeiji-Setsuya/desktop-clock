@@ -97,13 +97,97 @@ namespace DesktopClock {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool a {
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double ForegroundHue {
             get {
-                return ((bool)(this["a"]));
+                return ((double)(this["ForegroundHue"]));
             }
             set {
-                this["a"] = value;
+                this["ForegroundHue"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double ForegroundSaturation {
+            get {
+                return ((double)(this["ForegroundSaturation"]));
+            }
+            set {
+                this["ForegroundSaturation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public double ForegroundBrightness {
+            get {
+                return ((double)(this["ForegroundBrightness"]));
+            }
+            set {
+                this["ForegroundBrightness"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double BackgroundHue {
+            get {
+                return ((double)(this["BackgroundHue"]));
+            }
+            set {
+                this["BackgroundHue"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double BackgroundSaturation {
+            get {
+                return ((double)(this["BackgroundSaturation"]));
+            }
+            set {
+                this["BackgroundSaturation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double BackgroundBrightness {
+            get {
+                return ((double)(this["BackgroundBrightness"]));
+            }
+            set {
+                this["BackgroundBrightness"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public double ForegroundAlpha {
+            get {
+                return ((double)(this["ForegroundAlpha"]));
+            }
+            set {
+                this["ForegroundAlpha"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double BackgroundAlpha {
+            get {
+                return ((double)(this["BackgroundAlpha"]));
+            }
+            set {
+                this["BackgroundAlpha"] = value;
             }
         }
     }

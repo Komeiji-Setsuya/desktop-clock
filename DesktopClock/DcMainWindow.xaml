@@ -16,7 +16,7 @@
         HorizontalAlignment="Center" VerticalAlignment="Center"
         ResizeMode="NoResize" ShowInTaskbar="False"
         SizeToContent="WidthAndHeight"
-        StateChanged="mainWindow_StateChanged" Activated="mainWindow_Activated" Initialized="dcMainWindow_Initialized">
+        StateChanged="mainWindow_StateChanged" Activated="mainWindow_Activated" Initialized="DcMainWindow_Initialized">
     <Window.Resources>
         <vc:GetDcMainGridHeightToThisWidth x:Key="getDcMainGridHeightToThisWidth"/>
         <vc:GetDcMainGridWidthToTimeFontSize x:Key="getDcMainGridWidthToTimeFontSize"/>
@@ -33,6 +33,11 @@
             <RowDefinition Height="3*"/>
             <RowDefinition Height="4*"/>
         </Grid.RowDefinitions>
+        <Border x:Name="FontBackground" Background="#00000000"
+                HorizontalAlignment="Left" Height="{Binding Height, ElementName=DcMainGrid}"
+                VerticalAlignment="Top" Width="{Binding Width, ElementName=DcMainGrid}"
+                BorderThickness="1"
+                ContextMenu="{StaticResource ContexrMenu}" Grid.RowSpan="3"/>
         <Label Name="Time"
                Content="00:00:00"
                HorizontalAlignment="Center"
@@ -44,7 +49,7 @@
                Content="0000年00月00日"
                HorizontalAlignment="Center"
                VerticalAlignment="Top"
-               Foreground="White"
+               Foreground="{Binding Foreground, ElementName=Time}"
                FontSize="{Binding FontSize, Converter={StaticResource getDateFontSize}, ElementName=Time}"
                VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Row="1" Padding="5,0,5,0"
                FontFamily="{Binding FontFamily, ElementName=Time}"/>
@@ -53,7 +58,8 @@
                HorizontalAlignment="Center"
                VerticalAlignment="Top"
                Margin="{Binding FontSize, Converter={StaticResource getDateFontSizeToWeekMargin}, ElementName=Date}"
-               Foreground="White" Grid.Row="3" FontSize="{Binding FontSize, Converter={StaticResource getDateFontSizeToWeekFontSize}, ElementName=Date}"
+               Foreground="{Binding Foreground, ElementName=Time}"
+               Grid.Row="3" FontSize="{Binding FontSize, Converter={StaticResource getDateFontSizeToWeekFontSize}, ElementName=Date}"
                Visibility="Visible" Padding="5,0,5,0"
                FontFamily="{Binding FontFamily, ElementName=Time}"/>
         <Border x:Name="MainBackground"
