@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DesktopClock.OtherWindows"
         xmlns:cb="clr-namespace:DesktopClock.Custom"
         mc:Ignorable="d"
-        Title="MainMenu" WindowStartupLocation="CenterOwner" SizeToContent="WidthAndHeight" AllowsTransparency="True" WindowStyle="None" Background="#00000000" Foreground="{x:Null}" ShowInTaskbar="False">
+        Title="MainMenu" WindowStartupLocation="CenterOwner" SizeToContent="WidthAndHeight" AllowsTransparency="True" WindowStyle="None" Background="#00000000" Foreground="{x:Null}" ShowInTaskbar="False" Loaded="Window_Loaded">
     <Grid Width="330" Height="440"
           Background="#7F000000">
         <Grid Height="40"
@@ -18,8 +18,10 @@
                        Foreground="#AAFFFFFF"
                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
         </Grid>
+        <!--主体-->
         <ScrollViewer Height="360" VerticalAlignment="Top" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" Margin="0,40,0,0">
-            <Grid Background="#01000000" Height="634" Width="328">
+            <Grid Background="#01000000" Height="610" Width="328">
+                <!--大小-->
                 <Grid>
                     <Label x:Name="SizeLabel" Content="大小" Width="40" Margin="10,10,0,0"  HorizontalAlignment="Left" VerticalAlignment="Top" Style="{DynamicResource OptionLabel}"/>
                     <Canvas Margin="80,21,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
@@ -27,6 +29,7 @@
                         <Thumb x:Name="SizeThumb" Template="{DynamicResource OptionArrowThumb}" DragDelta="SizeThumb_DragDelta" Canvas.Left="-3" Canvas.Top="8" />
                     </Canvas>
                 </Grid>
+                <!--边角弧度-->
                 <Grid>
                     <Label x:Name="CornerLabel" Content="边角弧度" Width="60" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,50,0,0" Style="{DynamicResource OptionLabel}" />
                     <Canvas Margin="80,61,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
@@ -34,31 +37,155 @@
                         <Thumb x:Name="CornerThumb" Template="{DynamicResource OptionArrowThumb}" Canvas.Left="-3" Canvas.Top="8" DragDelta="CornerThumb_DragDelta" />
                     </Canvas>
                 </Grid>
-                <!--<Grid>
-                    <Label Content="全屏" Width="40" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,90,0,0" Style="{DynamicResource OptionLabel}"/>
-                    <CheckBox x:Name="WindowStateCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="80,97,0,0" Width="16" Height="16" Style="{DynamicResource DefaultCheckBox}" Checked="WindowStateCheckBox_Checked" Unchecked="WindowStateCheckBox_Unchecked" />
-                </Grid>-->
+                <!--字体-->
                 <Grid>
                     <Label Content="字体" Width="40" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,90,0,0" Style="{DynamicResource OptionLabel}"/>
                     <ComboBox x:Name="FontComboBox" Style="{DynamicResource DefaultMainMenuComboBox}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="80,96,0,0" Loaded="FontComboBox_Loaded" MaxDropDownHeight="200" SelectionChanged="FontComboBox_SelectionChanged"/>
                 </Grid>
+                <!--时间格式-->
                 <Grid>
                     <Label Content="时间格式" Width="60" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,130,0,0" Style="{DynamicResource OptionLabel}"/>
                     <RadioButton x:Name="TimeFormat_hms" Content="H:M:S" Width="100" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="80,130,0,0" Style="{DynamicResource BoxRadioButton}" Checked="TimeFormat_hms_Checked"/>
                     <RadioButton x:Name="TimeFormat_hm" Content="H:M" Width="100" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,130,0,0" Style="{DynamicResource BoxRadioButton}" Checked="TimeFormat_hm_Checked"/>
                 </Grid>
+                <!--日期格式-->
                 <Grid>
                     <Label Content="日期格式" Width="60" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,170,0,0" Style="{DynamicResource OptionLabel}"/>
                     <RadioButton x:Name="DateFormat_ymd1" Content="Y年M月D日" Width="80" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="80,170,0,0" Style="{DynamicResource BoxRadioButton}" Checked="DateFormat_ymd1_Checked"/>
                     <RadioButton x:Name="DateFormat_ymd2" Content="Y/M/D" Width="60" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,170,0,0" Style="{DynamicResource BoxRadioButton}" Checked="DateFormat_ymd2_Checked"/>
                     <RadioButton x:Name="DateFormat_ymd3" Content="Y.M.D" Width="60" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,170,0,0" Style="{DynamicResource BoxRadioButton}" Checked="DateFormat_ymd3_Checked"/>
                 </Grid>
+                <!--星期格式-->
                 <Grid>
                     <Label Content="星期格式" Width="60" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,210,0,0" Style="{DynamicResource OptionLabel}" />
                     <RadioButton x:Name="WeekFormat_l" Content="星期" Width="100" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="80,210,0,0" Style="{DynamicResource BoxRadioButton}" Checked="WeekFormat_l_Checked"/>
                     <RadioButton x:Name="WeekFormat_s" Content="周" Width="100" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,210,0,0" Style="{DynamicResource BoxRadioButton}" Checked="WeekFormat_s_Checked"/>
                 </Grid>
-                <cb:CustomButton x:Name="ResetSettings" Content="重置" Style="{DynamicResource MainMenuButtonStyle}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,30,10" Click="ResetSettings_Click"/>
+                <!--文字颜色-->
+                <Grid>
+                    <Label Content="文字颜色" Width="60" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,250,0,0" Style="{DynamicResource OptionLabel}" />
+                    <!--H-->
+                    <Label x:Name="ForegroundHueLabel" Content="H" Width="20" Margin="10,278,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{DynamicResource OptionLabel}"/>
+                    <Border x:Name="ForegroundHueBorder" BorderThickness="1" BorderBrush="White" Height="8" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,285,0,0">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                <GradientStop Color="Red"/>
+                                <GradientStop Color="Red" Offset="1"/>
+                                <GradientStop Color="Yellow" Offset="0.16666"/>
+                                <GradientStop Color="Lime" Offset="0.33333"/>
+                                <GradientStop Color="Cyan" Offset="0.5"/>
+                                <GradientStop Color="Blue" Offset="0.66666"/>
+                                <GradientStop Color="Magenta" Offset="0.83333"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+                    <Canvas Margin="50,285,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Thumb x:Name="ForegroundHueThumb" Template="{DynamicResource OptionArrowThumb}" Canvas.Left="-3" Canvas.Top="8" DragDelta="ForegroundHueThumb_DragDelta" />
+                    </Canvas>
+                    <TextBox x:Name="ForegroundHueTextBox" Height="18" Width="30" Text="000" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,285,30,0" Style="{DynamicResource EditableTextBoxStyle}" TextChanged="ForegroundHueTextBox_TextChanged"/>
+                    <Label Content="°" Width="20" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,278,14,0" Style="{DynamicResource OptionLabel}"/>
+                    <!--S-->
+                    <Label x:Name="ForegroundSaturationLabel" Content="S" Width="20" Margin="10,308,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{DynamicResource OptionLabel}"/>
+                    <Border x:Name="ForegroundSaturationBorder" BorderThickness="1" BorderBrush="White" Height="8" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,315,0,0">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                <GradientStop Color="White"/>
+                                <GradientStop x:Name="ForegroundSaturationGradientStop" Color="Red" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+                    <Canvas Margin="50,315,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Thumb x:Name="ForegroundSaturationThumb" Template="{DynamicResource OptionArrowThumb}" Canvas.Left="-3" Canvas.Top="8" DragDelta="ForegroundSaturationThumb_DragDelta" />
+                    </Canvas>
+                    <TextBox x:Name="ForegroundSaturationTextBox" Height="18" Width="30" Text="000" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,315,30,0" Style="{DynamicResource EditableTextBoxStyle}" TextChanged="ForegroundSaturationTextBox_TextChanged"/>
+                    <Label Content="%" Width="20" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,308,14,0" Style="{DynamicResource OptionLabel}"/>
+                    <!--B-->
+                    <Label x:Name="ForegroundBrightnessLabel" Content="B" Width="20" Margin="10,338,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{DynamicResource OptionLabel}"/>
+                    <Border x:Name="ForegroundBrightnessBorder" BorderThickness="1" BorderBrush="White" Height="8" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,345,0,0">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                <GradientStop Color="Black"/>
+                                <GradientStop Color="White" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+                    <Canvas Margin="50,345,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Thumb x:Name="ForegroundBrightnessThumb" Template="{DynamicResource OptionArrowThumb}" Canvas.Left="-3" Canvas.Top="8" DragDelta="ForegroundBrightnessThumb_DragDelta" />
+                    </Canvas>
+                    <TextBox x:Name="ForegroundBrightnessTextBox" Height="18" Width="30" Text="000" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,345,30,0" Style="{DynamicResource EditableTextBoxStyle}" TextChanged="ForegroundBrightnessTextBox_TextChanged"/>
+                    <Label Content="%" Width="20" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,338,14,0" Style="{DynamicResource OptionLabel}"/>
+                    <!--A-->
+                    <Label x:Name="ForegroundAlphaLabel" Content="A" Width="20" Margin="10,368,0,0"  HorizontalAlignment="Left" VerticalAlignment="Top" Style="{DynamicResource OptionLabel}"/>
+                    <Canvas Margin="50,375,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Path x:Name="ForegroundAlphaThumbScope" Fill="#7FFFFFFF" Data="M 0 8 l 200 0 l 0 -8 Z" Canvas.Left="0" Canvas.Top="0"/>
+                        <Thumb x:Name="ForegroundAlphaThumb" Template="{DynamicResource OptionArrowThumb}" Canvas.Left="-3" Canvas.Top="8" DragDelta="ForegroundAlphaThumb_DragDelta" />
+                    </Canvas>
+                    <TextBox x:Name="ForegroundAlphaTextBox" Height="18" Width="30" Text="000" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,375,30,0" Style="{DynamicResource EditableTextBoxStyle}" TextChanged="ForegroundAlphaTextBox_TextChanged"/>
+                    <Label Content="%" Width="20" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,368,14,0" Style="{DynamicResource OptionLabel}"/>
+                </Grid>
+                <!--背景颜色-->
+                <Grid>
+                    <Label Content="背景颜色" Width="60" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,410,0,0" Style="{DynamicResource OptionLabel}" />
+                    <!--H-->
+                    <Label x:Name="BackgroundHueLabel" Content="H" Width="20" Margin="10,438,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{DynamicResource OptionLabel}"/>
+                    <Border x:Name="BackgroundHueBorder" BorderThickness="1" BorderBrush="White" Height="8" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,445,0,0">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                <GradientStop Color="Red"/>
+                                <GradientStop Color="Red" Offset="1"/>
+                                <GradientStop Color="Yellow" Offset="0.16666"/>
+                                <GradientStop Color="Lime" Offset="0.33333"/>
+                                <GradientStop Color="Cyan" Offset="0.5"/>
+                                <GradientStop Color="Blue" Offset="0.66666"/>
+                                <GradientStop Color="Magenta" Offset="0.83333"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+                    <Canvas Margin="50,445,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Thumb x:Name="BackgroundHueThumb" Template="{DynamicResource OptionArrowThumb}" Canvas.Left="-3" Canvas.Top="8" DragDelta="BackgroundHueThumb_DragDelta" />
+                    </Canvas>
+                    <TextBox x:Name="BackgroundHueTextBox" Height="18" Width="30" Text="000" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,445,30,0" Style="{DynamicResource EditableTextBoxStyle}" TextChanged="BackgroundHueTextBox_TextChanged"/>
+                    <Label Content="°" Width="20" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,438,14,0" Style="{DynamicResource OptionLabel}"/>
+                    <!--S-->
+                    <Label x:Name="BackgroundSaturationLabel" Content="S" Width="20" Margin="10,468,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{DynamicResource OptionLabel}"/>
+                    <Border x:Name="BackgroundSaturationBorder" BorderThickness="1" BorderBrush="White" Height="8" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,475,0,0">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                <GradientStop Color="White"/>
+                                <GradientStop x:Name="BackgroundSaturationGradientStop" Color="Red" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+                    <Canvas Margin="50,475,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Thumb x:Name="BackgroundSaturationThumb" Template="{DynamicResource OptionArrowThumb}" Canvas.Left="-3" Canvas.Top="8" DragDelta="BackgroundSaturationThumb_DragDelta" />
+                    </Canvas>
+                    <Label Content="%" Width="20" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,468,14,0" Style="{DynamicResource OptionLabel}"/>
+                    <TextBox x:Name="BackgroundSaturationTextBox" Height="18" Width="30" Text="000" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,475,30,0" Style="{DynamicResource EditableTextBoxStyle}" TextChanged="BackgroundSaturationTextBox_TextChanged"/>
+                    <!--B-->
+                    <Label x:Name="BackgroundBrightnessLabel" Content="B" Width="20" Margin="10,498,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{DynamicResource OptionLabel}"/>
+                    <Border x:Name="BackgroundBrightnessBorder" BorderThickness="1" BorderBrush="White" Height="8" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,505,0,0">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                <GradientStop Color="Black"/>
+                                <GradientStop Color="White" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+                    <Canvas Margin="50,505,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Thumb x:Name="BackgroundBrightnessThumb" Template="{DynamicResource OptionArrowThumb}" Canvas.Left="-3" Canvas.Top="8" DragDelta="BackgroundBrightnessThumb_DragDelta" />
+                    </Canvas>
+                    <TextBox x:Name="BackgroundBrightnessTextBox" Height="18" Width="30" Text="000" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,505,30,0" Style="{DynamicResource EditableTextBoxStyle}" TextChanged="BackgroundBrightnessTextBox_TextChanged"/>
+                    <Label Content="%" Width="20" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,498,14,0" Style="{DynamicResource OptionLabel}"/>
+                    <!--A-->
+                    <Label x:Name="BackgroundAlphaLabel" Content="A" Width="20" Margin="10,528,0,0"  HorizontalAlignment="Left" VerticalAlignment="Top" Style="{DynamicResource OptionLabel}"/>
+                    <Canvas Margin="50,535,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Path x:Name="BackgroundAlphaThumbScope" Fill="#7FFFFFFF" Data="M 0 8 l 200 0 l 0 -8 Z" Canvas.Left="0" Canvas.Top="0"/>
+                        <Thumb x:Name="BackgroundAlphaThumb" Template="{DynamicResource OptionArrowThumb}" Canvas.Left="-3" Canvas.Top="8" DragDelta="BackgroundAlphaThumb_DragDelta" />
+                    </Canvas>
+                    <TextBox x:Name="BackgroundAlphaTextBox" Height="18" Width="30" Text="000" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,535,30,0" Style="{DynamicResource EditableTextBoxStyle}" TextChanged="BackgroundAlphaTextBox_TextChanged"/>
+                    <Label Content="%" Width="20" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,528,14,0" Style="{DynamicResource OptionLabel}"/>
+                </Grid>
+                <cb:CustomButton x:Name="ResetSettings" Content="恢复默认设置" Style="{DynamicResource MainMenuButtonStyle}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,30,10" Click="ResetSettings_Click"/>
             </Grid>
         </ScrollViewer>
         <Grid Height="40" Background="#3F000000" VerticalAlignment="Bottom">
