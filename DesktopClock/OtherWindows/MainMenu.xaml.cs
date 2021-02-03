@@ -29,10 +29,24 @@ namespace DesktopClock.OtherWindows
         public MainMenu(Window owner)
         {
             Owner = owner;
+
             InitializeComponent();
+
             //设置初始位置
             InitializeThumbs();
-            
+        }
+
+        /// <summary>
+        /// 用于修复一个因TextBox初始化时全为0导致的显示的bug，此bug为TextBox设计版的默认值引起，因此在加载后进行一次取消设置操作
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            DcMainWindow dcMainWindow = Owner as DcMainWindow;
+            dcMainWindow.LoadSettings();
+            //恢复之前界面状态
+            InitializeThumbs();
         }
 
         /// <summary>
@@ -42,22 +56,11 @@ namespace DesktopClock.OtherWindows
         {
             DcMainWindow dcMainWindow = Owner as DcMainWindow;
             //设置SizeThumb的初始位置
-            Canvas.SetLeft(SizeThumb, ((200 * (dcMainWindow.DcMainGrid.Height - 50)) / SystemParameters.WorkArea.Height) - 3);
+            Canvas.SetLeft(SizeThumb, ((200.0 * (dcMainWindow.DcMainGrid.Height - 50.0)) / SystemParameters.WorkArea.Height) - 3.0);
             //设置CornerThumb的初始位置
             string mbCornerRadius = dcMainWindow.MainBackground.CornerRadius.ToString();
             string[] allCorners = mbCornerRadius.Split(',');
-            Canvas.SetLeft(CornerThumb, (200 * double.Parse(allCorners[0]) / dcMainWindow.DcMainGrid.Height) - 3);
-            ////设置全屏按键初始状态
-            //if (dcMainWindow.WindowState == WindowState.Normal)
-            //{
-            //    WindowStateCheckBox.IsChecked = false;
-            //    StateChangeToNormal();
-            //}
-            //else
-            //{
-            //    WindowStateCheckBox.IsChecked = true;
-            //    StateChangeToMaximized();
-            //}
+            Canvas.SetLeft(CornerThumb, (200.0 * double.Parse(allCorners[0]) / dcMainWindow.DcMainGrid.Height) - 3.0);
             //设置字体ComboBox的初始selector
             FontComboBox.SelectedItem = dcMainWindow.Time.FontFamily.ToString();
             //设置时间格式的初始选择状态
@@ -91,6 +94,28 @@ namespace DesktopClock.OtherWindows
             {
                 WeekFormat_s.IsChecked = true;
             }
+            //设置前景色滑块的初始位置
+            Canvas.SetLeft(ForegroundHueThumb, ((5.0 * DcMainWindow.ForegroundHue) / 9.0) - 3);
+            Canvas.SetLeft(ForegroundSaturationThumb, (200.0 * DcMainWindow.ForegroundSaturation) - 3);
+            Canvas.SetLeft(ForegroundBrightnessThumb, (200.0 * DcMainWindow.ForegroundBrightness) - 3);
+            Canvas.SetLeft(ForegroundAlphaThumb, (200.0 * DcMainWindow.ForegroundAlpha) - 3);
+            //设置背景色滑块的初始位置
+            Canvas.SetLeft(BackgroundHueThumb, ((5.0 * DcMainWindow.BackgroundHue) / 9.0) - 3);
+            Canvas.SetLeft(BackgroundSaturationThumb, (200.0 * DcMainWindow.BackgroundSaturation) - 3);
+            Canvas.SetLeft(BackgroundBrightnessThumb, (200.0 * DcMainWindow.BackgroundBrightness) - 3);
+            Canvas.SetLeft(BackgroundAlphaThumb, (200.0 * DcMainWindow.BackgroundAlpha) - 3);
+            //设置SaturationThumb初始渐变色
+            GradientStopColorControl(ForegroundSaturationGradientStop, ForegroundHueThumb);
+            GradientStopColorControl(BackgroundSaturationGradientStop, BackgroundHueThumb);
+            //设置TextBoxes的初始值
+            ForegroundHueTextBox.Text = ((int)DcMainWindow.ForegroundHue).ToString();
+            ForegroundSaturationTextBox.Text = ((int)(DcMainWindow.ForegroundSaturation * 100.0)).ToString();
+            ForegroundBrightnessTextBox.Text = ((int)(DcMainWindow.ForegroundBrightness * 100.0)).ToString();
+            ForegroundAlphaTextBox.Text = ((int)(DcMainWindow.ForegroundAlpha * 100.0)).ToString();
+            BackgroundHueTextBox.Text = ((int)DcMainWindow.BackgroundHue).ToString();
+            BackgroundSaturationTextBox.Text = ((int)(DcMainWindow.BackgroundSaturation * 100.0)).ToString();
+            BackgroundBrightnessTextBox.Text = ((int)(DcMainWindow.BackgroundBrightness * 100.0)).ToString();
+            BackgroundAlphaTextBox.Text = ((int)(DcMainWindow.BackgroundAlpha * 100.0)).ToString();
         }
 
         /// <summary>
@@ -113,6 +138,9 @@ namespace DesktopClock.OtherWindows
             CancelSettingsChange_Click(sender, e);          //关闭前进行一次取消设置
             DcMainWindow.isMainMenuShow = false;
             Close();
+
+            GC.Collect();
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -128,11 +156,20 @@ namespace DesktopClock.OtherWindows
             string mbCornerRadius = dcMainWindow.MainBackground.CornerRadius.ToString();                //获取边角弧度
             string[] allCorners = mbCornerRadius.Split(',');
             DesktopClockSettings.Default.WindowCorner = double.Parse(allCorners[0]);                    //边角弧度保存
-            //DesktopClockSettings.Default.WindowState = (int)dcMainWindow.WindowState;                 //是否全屏
             DesktopClockSettings.Default.WindowFontFamily = dcMainWindow.Time.FontFamily.ToString();    //字体
             DesktopClockSettings.Default.TimeFormat = DcMainWindow.TimeFormat;                          //时间格式
             DesktopClockSettings.Default.DateFormat = DcMainWindow.DateFormat;                          //日期格式
             DesktopClockSettings.Default.WeekFormat = DcMainWindow.WeekFormat;                          //星期格式
+            //前景色
+            DesktopClockSettings.Default.ForegroundHue = DcMainWindow.ForegroundHue;
+            DesktopClockSettings.Default.ForegroundSaturation = DcMainWindow.ForegroundSaturation;
+            DesktopClockSettings.Default.ForegroundBrightness = DcMainWindow.ForegroundBrightness;
+            DesktopClockSettings.Default.ForegroundAlpha = DcMainWindow.ForegroundAlpha;
+            //背景色
+            DesktopClockSettings.Default.BackgroundHue = DcMainWindow.BackgroundHue;
+            DesktopClockSettings.Default.BackgroundSaturation = DcMainWindow.BackgroundSaturation;
+            DesktopClockSettings.Default.BackgroundBrightness = DcMainWindow.BackgroundBrightness;
+            DesktopClockSettings.Default.BackgroundAlpha = DcMainWindow.BackgroundAlpha;
 
             //保存更改
             DesktopClockSettings.Default.Save();
@@ -158,14 +195,11 @@ namespace DesktopClock.OtherWindows
         {
             DcMainWindow dcMainWindow = Owner as DcMainWindow;
             //重置高度
-            dcMainWindow.DcMainGrid.Height = 180;
-            DesktopClockSettings.Default.WindowSize_height = 180;
+            dcMainWindow.DcMainGrid.Height = 180.0;
+            DesktopClockSettings.Default.WindowSize_height = 180.0;
             //重置边角半径
             dcMainWindow.MainBackground.CornerRadius = new CornerRadius(0);
-            DesktopClockSettings.Default.WindowCorner = 0;
-            ////重置窗口状态
-            //Application.Current.MainWindow.WindowState = (WindowState)0;
-            //StateChangeToNormal();
+            DesktopClockSettings.Default.WindowCorner = 0.0;
             //重置字体
             dcMainWindow.Time.FontFamily = new FontFamily("Microsoft YaHei UI");
             DesktopClockSettings.Default.WindowFontFamily = "Microsoft YaHei UI";
@@ -178,8 +212,31 @@ namespace DesktopClock.OtherWindows
             //重置星期格式
             DcMainWindow.WeekFormat = "dddd";
             DesktopClockSettings.Default.WeekFormat = DcMainWindow.WeekFormat;
+            //重置前景色
+            DcMainWindow.ForegroundHue = 0.0;
+            DcMainWindow.ForegroundSaturation = 0.0;
+            DcMainWindow.ForegroundBrightness = 1.0;
+            DcMainWindow.ForegroundAlpha = 1.0;
+            dcMainWindow.ChangeForegroundColor();
+            DesktopClockSettings.Default.ForegroundHue = DcMainWindow.ForegroundHue;
+            DesktopClockSettings.Default.ForegroundSaturation = DcMainWindow.ForegroundSaturation;
+            DesktopClockSettings.Default.ForegroundBrightness = DcMainWindow.ForegroundBrightness;
+            DesktopClockSettings.Default.ForegroundAlpha = DcMainWindow.ForegroundAlpha;
+            //重置背景色
+            DcMainWindow.BackgroundHue = 0.0;
+            DcMainWindow.BackgroundSaturation = 0.0;
+            DcMainWindow.BackgroundBrightness = 0.0;
+            DcMainWindow.BackgroundAlpha = 0.0;
+            dcMainWindow.ChangeBackgroundColor();
+            DesktopClockSettings.Default.BackgroundHue = DcMainWindow.BackgroundHue;
+            DesktopClockSettings.Default.BackgroundSaturation = DcMainWindow.BackgroundSaturation;
+            DesktopClockSettings.Default.BackgroundBrightness = DcMainWindow.BackgroundBrightness;
+            DesktopClockSettings.Default.BackgroundAlpha = DcMainWindow.BackgroundAlpha;
 
+            //保存更改
             DesktopClockSettings.Default.Save();
+            //重置后进行一次取消设置
+            CancelSettingsChange_Click(sender, e);
         }
 
         /// <summary>
@@ -205,26 +262,35 @@ namespace DesktopClock.OtherWindows
             }
         }
 
+        /// <summary>
+        /// 大小滑块控制
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SizeThumb_DragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
             OptionThumbDrug(SizeThumb, e, -3.0, 197.0);
             DcMainWindow dcMainWindow = Owner as DcMainWindow;
-            if (Canvas.GetLeft(SizeThumb) >= -3)
+            if (Canvas.GetLeft(SizeThumb) >= -3.0 && Canvas.GetLeft(SizeThumb) <= 197.0)
             {
                 dcMainWindow.DcMainGrid.Height                                              //获得SizeThumb的Left转换给DcMainGrid的Height
-                    = (((Canvas.GetLeft(SizeThumb) + 3) * SystemParameters.WorkArea.Height) / 200) + 50.0;
+                    = (((Canvas.GetLeft(SizeThumb) + 3.0) * SystemParameters.WorkArea.Height) / 200.0) + 50.0;
                 //y_1 - 50 = k_1 * (x_1 + 3), k_1 = SystemParameters.WorkArea.Height / 200
                 dcMainWindow.MainBackground.CornerRadius                                    //获得CornerThumb的Left转换给MainBackground的CornerRadius
                     = new CornerRadius(((Canvas.GetLeft(CornerThumb) + 3.0) * dcMainWindow.DcMainGrid.Height) / 200.0);
                 //y_2 = k_2 * (x_2 + 3), k_2 = y_2 / 200
             }
         }
-
+        /// <summary>
+        /// 边角弧度滑块控制
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CornerThumb_DragDelta(object sender, DragDeltaEventArgs e)
         {
             OptionThumbDrug(CornerThumb, e, -3.0, 197.0);
             DcMainWindow dcMainWindow = Owner as DcMainWindow;
-            if (Canvas.GetLeft(CornerThumb) >= -3)
+            if (Canvas.GetLeft(CornerThumb) >= -3.0 && Canvas.GetLeft(CornerThumb) <= 197.0)
             {
                 dcMainWindow.MainBackground.CornerRadius                                                //获得CornerThumb的Left转换给MainBackground的CornerRadius
                     = new CornerRadius(((Canvas.GetLeft(CornerThumb) + 3.0) * dcMainWindow.DcMainGrid.Height) / 200.0);
@@ -245,16 +311,14 @@ namespace DesktopClock.OtherWindows
                 //判断该字体是不是中文字体
                 if (fontdics.ContainsKey(XmlLanguage.GetLanguage("zh-cn")))
                 {
-                    string fontfamilyname = null;
-                    if (fontdics.TryGetValue(XmlLanguage.GetLanguage("zh-cn"), out fontfamilyname))
+                    if (fontdics.TryGetValue(XmlLanguage.GetLanguage("zh-cn"), out string fontfamilyname))
                     {
                         FontComboBox.Items.Add(fontfamilyname);
                     }
                 }
                 else
                 {
-                    string fontfamilyname = null;
-                    if (fontdics.TryGetValue(XmlLanguage.GetLanguage("en-us"), out fontfamilyname))
+                    if (fontdics.TryGetValue(XmlLanguage.GetLanguage("en-us"), out string fontfamilyname))
                     {
                         FontComboBox.Items.Add(fontfamilyname);
                     }
@@ -332,48 +396,327 @@ namespace DesktopClock.OtherWindows
             DcMainWindow.WeekFormat = "ddd";
         }
 
-        ////CheckBox
-        //private void WindowStateCheckBox_Checked(object sender, RoutedEventArgs e)
-        //{
-        //    StateChangeToMaximized();
-        //    Application.Current.MainWindow.WindowState = (WindowState)2;         //使窗口全屏
-        //}
+        /// <summary>
+        /// SaturationThumb渐变色控制
+        /// </summary>
+        /// <param name="gradientStop">渐变色关键点</param>
+        /// <param name="thumb">数据来源滑块</param>
+        private void GradientStopColorControl(GradientStop gradientStop, Thumb thumb)
+        {
+            RGB_HSB.HSBToRGB(1.8 * (Canvas.GetLeft(thumb) + 3.0), 1.0, 1.0, out int r, out int g, out int b);
+            gradientStop.Color = (Color)ColorConverter.ConvertFromString(RGB_HSB.ARGBToHex(1.0, r, g, b));
+        }
 
-        //private void WindowStateCheckBox_Unchecked(object sender, RoutedEventArgs e)
-        //{
-        //    StateChangeToNormal();
-        //    Application.Current.MainWindow.WindowState = (WindowState)0;         //窗口化
-        //}
-        ///// <summary>
-        ///// 全屏后的更改项
-        ///// </summary>
-        //private void StateChangeToMaximized()
-        //{
-        //    DcMainWindow dcMainWindow = Owner as DcMainWindow;
-        //    //透明度减半
-        //    SizeLabel.Opacity = SizeThumb.Opacity = SizeThumbScope.Opacity = 0.5;
-        //    CornerLabel.Opacity = CornerThumb.Opacity = CornerThumbScope.Opacity = 0.5;
-        //    //鼠标穿透
-        //    SizeThumb.IsHitTestVisible = false;
-        //    CornerThumb.IsHitTestVisible = false;
-        //    //将MainWindow的高设为1080
-        //    double y = SystemParameters.WorkArea.Height;
-        //    dcMainWindow.DcMainGrid.Height = y;
-        //}
-        ///// <summary>
-        ///// 窗口化后的更改
-        ///// </summary>
-        //private void StateChangeToNormal()
-        //{
-        //    DcMainWindow dcMainWindow = Owner as DcMainWindow;
-        //    //透明度恢复
-        //    SizeLabel.Opacity = SizeThumb.Opacity = SizeThumbScope.Opacity = 1.0;
-        //    CornerLabel.Opacity = CornerThumb.Opacity = CornerThumbScope.Opacity = 1.0;
-        //    //取消鼠标穿透
-        //    SizeThumb.IsHitTestVisible = true;
-        //    CornerThumb.IsHitTestVisible = true;
-        //    //将MainWindow的高设SizeThumb转换值
-        //    dcMainWindow.DcMainGrid.Height = 4.0 * Canvas.GetLeft(SizeThumb) + 62.0;
-        //}
+        //前景色控制
+        /// <summary>
+        /// 前景色的H滑块控制
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ForegroundHueThumb_DragDelta(object sender, DragDeltaEventArgs e)
+        {
+            OptionThumbDrug(ForegroundHueThumb, e, -3, 197);
+            DcMainWindow dcMainWindow = Owner as DcMainWindow;
+            if (Canvas.GetLeft(ForegroundHueThumb) >= -3.0 && Canvas.GetLeft(ForegroundHueThumb) <= 197.0)
+            {
+                DcMainWindow.ForegroundHue = 1.8 * (Canvas.GetLeft(ForegroundHueThumb) + 3.0);
+                dcMainWindow.ChangeForegroundColor();
+                GradientStopColorControl(ForegroundSaturationGradientStop, ForegroundHueThumb);
+                ForegroundHueTextBox.Text = ((int)DcMainWindow.ForegroundHue).ToString();
+            }
+        }
+        /// <summary>
+        /// 前景色的S滑块控制
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ForegroundSaturationThumb_DragDelta(object sender, DragDeltaEventArgs e)
+        {
+            OptionThumbDrug(ForegroundSaturationThumb, e, -3, 197);
+            DcMainWindow dcMainWindow = Owner as DcMainWindow;
+            if (Canvas.GetLeft(ForegroundSaturationThumb) >= -3.0 && Canvas.GetLeft(ForegroundSaturationThumb) <= 197.0)
+            {
+                DcMainWindow.ForegroundSaturation = 0.005 * (Canvas.GetLeft(ForegroundSaturationThumb) + 3.0);
+                dcMainWindow.ChangeForegroundColor();
+                ForegroundSaturationTextBox.Text = ((int)(DcMainWindow.ForegroundSaturation * 100.0)).ToString();
+            }
+        }
+        /// <summary>
+        /// 前景色的B滑块控制
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ForegroundBrightnessThumb_DragDelta(object sender, DragDeltaEventArgs e)
+        {
+            OptionThumbDrug(ForegroundBrightnessThumb, e, -3, 197);
+            DcMainWindow dcMainWindow = Owner as DcMainWindow;
+            if (Canvas.GetLeft(ForegroundBrightnessThumb) >= -3.0 && Canvas.GetLeft(ForegroundBrightnessThumb) <= 197.0)
+            {
+                DcMainWindow.ForegroundBrightness = 0.005 * (Canvas.GetLeft(ForegroundBrightnessThumb) + 3.0);
+                dcMainWindow.ChangeForegroundColor();
+                ForegroundBrightnessTextBox.Text = ((int)(DcMainWindow.ForegroundBrightness * 100.0)).ToString();
+            }
+        }
+        /// <summary>
+        /// 前景色的A滑块控制
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ForegroundAlphaThumb_DragDelta(object sender, DragDeltaEventArgs e)
+        {
+            OptionThumbDrug(ForegroundAlphaThumb, e, -3, 197);
+            DcMainWindow dcMainWindow = Owner as DcMainWindow;
+            if (Canvas.GetLeft(ForegroundAlphaThumb) >= -3.0 && Canvas.GetLeft(ForegroundAlphaThumb) <= 197.0)
+            {
+                DcMainWindow.ForegroundAlpha = 0.005 * (Canvas.GetLeft(ForegroundAlphaThumb) + 3.0);
+                dcMainWindow.ChangeForegroundColor();
+                ForegroundAlphaTextBox.Text = ((int)(DcMainWindow.ForegroundAlpha * 100.0)).ToString();
+            }
+        }
+        //背景色控制
+        /// <summary>
+        /// 背景色的H滑块控制
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BackgroundHueThumb_DragDelta(object sender, DragDeltaEventArgs e)
+        {
+            OptionThumbDrug(BackgroundHueThumb, e, -3, 197);
+            DcMainWindow dcMainWindow = Owner as DcMainWindow;
+            if (Canvas.GetLeft(BackgroundHueThumb) >= -3.0 && Canvas.GetLeft(BackgroundHueThumb) <= 197.0)
+            {
+                DcMainWindow.BackgroundHue = 1.8 * (Canvas.GetLeft(BackgroundHueThumb) + 3.0);
+                dcMainWindow.ChangeBackgroundColor();
+                GradientStopColorControl(BackgroundSaturationGradientStop, BackgroundHueThumb);
+                BackgroundHueTextBox.Text = ((int)DcMainWindow.BackgroundHue).ToString();
+            }
+        }
+        /// <summary>
+        /// 背景色的S滑块控制
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BackgroundSaturationThumb_DragDelta(object sender, DragDeltaEventArgs e)
+        {
+            OptionThumbDrug(BackgroundSaturationThumb, e, -3, 197);
+            DcMainWindow dcMainWindow = Owner as DcMainWindow;
+            if (Canvas.GetLeft(BackgroundSaturationThumb) >= -3.0 && Canvas.GetLeft(BackgroundSaturationThumb) <= 197.0)
+            {
+                DcMainWindow.BackgroundSaturation = 0.005 * (Canvas.GetLeft(BackgroundSaturationThumb) + 3.0);
+                dcMainWindow.ChangeBackgroundColor();
+                BackgroundSaturationTextBox.Text = ((int)(DcMainWindow.BackgroundSaturation * 100.0)).ToString();
+            }
+        }
+        /// <summary>
+        /// 背景色的B滑块控制
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BackgroundBrightnessThumb_DragDelta(object sender, DragDeltaEventArgs e)
+        {
+            OptionThumbDrug(BackgroundBrightnessThumb, e, -3, 197);
+            DcMainWindow dcMainWindow = Owner as DcMainWindow;
+            if (Canvas.GetLeft(BackgroundBrightnessThumb) >= -3.0 && Canvas.GetLeft(BackgroundBrightnessThumb) <= 197.0)
+            {
+                DcMainWindow.BackgroundBrightness = 0.005 * (Canvas.GetLeft(BackgroundBrightnessThumb) + 3.0);
+                dcMainWindow.ChangeBackgroundColor();
+                BackgroundBrightnessTextBox.Text = ((int)(DcMainWindow.BackgroundBrightness * 100.0)).ToString();
+            }
+        }
+        /// <summary>
+        /// 背景色的A滑块控制
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BackgroundAlphaThumb_DragDelta(object sender, DragDeltaEventArgs e)
+        {
+            OptionThumbDrug(BackgroundAlphaThumb, e, -3, 197);
+            DcMainWindow dcMainWindow = Owner as DcMainWindow;
+            if (Canvas.GetLeft(BackgroundAlphaThumb) >= -3.0 && Canvas.GetLeft(BackgroundAlphaThumb) <= 197.0)
+            {
+                DcMainWindow.BackgroundAlpha = 0.005 * (Canvas.GetLeft(BackgroundAlphaThumb) + 3.0);
+                dcMainWindow.ChangeBackgroundColor();
+                BackgroundAlphaTextBox.Text = ((int)(DcMainWindow.BackgroundAlpha * 100.0)).ToString();
+            }
+        }
+
+        //前景色的输入取色功能
+        /// <summary>
+        /// 前景色H输入取色
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ForegroundHueTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            DcMainWindow dcMainWindow = Owner as DcMainWindow;
+            double.TryParse(ForegroundHueTextBox.Text, out double text);
+            if (text < 0.0)
+            {
+                text = 0.0;
+            }
+            else if (text > 360.0)
+            {
+                text = 360.0;
+            }
+            ForegroundHueTextBox.Text = text.ToString();
+            DcMainWindow.ForegroundHue = text;
+            dcMainWindow.ChangeForegroundColor();
+            Canvas.SetLeft(ForegroundHueThumb, ((5.0 * DcMainWindow.ForegroundHue) / 9.0) - 3);
+        }
+        /// <summary>
+        /// 前景色S输入取色
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ForegroundSaturationTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            DcMainWindow dcMainWindow = Owner as DcMainWindow;
+            double.TryParse(ForegroundSaturationTextBox.Text, out double text);
+            if (text < 0.0)
+            {
+                text = 0.0;
+            }
+            else if (text > 100.0)
+            {
+                text = 100.0;
+            }
+            ForegroundSaturationTextBox.Text = text.ToString();
+            DcMainWindow.ForegroundSaturation = text / 100.0;
+            dcMainWindow.ChangeForegroundColor();
+            Canvas.SetLeft(ForegroundSaturationThumb, (200.0 * DcMainWindow.ForegroundSaturation) - 3);
+        }
+        /// <summary>
+        /// 前景色B输入取色
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ForegroundBrightnessTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            DcMainWindow dcMainWindow = Owner as DcMainWindow;
+            double.TryParse(ForegroundBrightnessTextBox.Text, out double text);
+            if (text < 0.0)
+            {
+                text = 0.0;
+            }
+            else if (text > 100.0)
+            {
+                text = 100.0;
+            }
+            ForegroundBrightnessTextBox.Text = text.ToString();
+            DcMainWindow.ForegroundBrightness = text / 100.0;
+            dcMainWindow.ChangeForegroundColor();
+            Canvas.SetLeft(ForegroundBrightnessThumb, (200.0 * DcMainWindow.ForegroundBrightness) - 3);
+        }
+        /// <summary>
+        /// 前景色A输入取色
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ForegroundAlphaTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            DcMainWindow dcMainWindow = Owner as DcMainWindow;
+            double.TryParse(ForegroundAlphaTextBox.Text, out double text);
+            if (text < 0.0)
+            {
+                text = 0.0;
+            }
+            else if (text > 100.0)
+            {
+                text = 100.0;
+            }
+            ForegroundAlphaTextBox.Text = text.ToString();
+            DcMainWindow.ForegroundAlpha = text / 100.0;
+            dcMainWindow.ChangeForegroundColor();
+            Canvas.SetLeft(ForegroundAlphaThumb, (200.0 * DcMainWindow.ForegroundAlpha) - 3);
+        }
+        //背景色的输入取色功能
+        /// <summary>
+        /// 背景色H输入取色
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BackgroundHueTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            DcMainWindow dcMainWindow = Owner as DcMainWindow;
+            double.TryParse(BackgroundHueTextBox.Text, out double text);
+            if (text < 0.0)
+            {
+                text = 0.0;
+            }
+            else if (text > 360.0)
+            {
+                text = 360.0;
+            }
+            BackgroundHueTextBox.Text = text.ToString();
+            DcMainWindow.BackgroundHue = text;
+            dcMainWindow.ChangeBackgroundColor();
+            Canvas.SetLeft(BackgroundHueThumb, ((5.0 * DcMainWindow.BackgroundHue) / 9.0) - 3);
+        }
+        /// <summary>
+        /// 背景色S输入取色
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BackgroundSaturationTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            DcMainWindow dcMainWindow = Owner as DcMainWindow;
+            double.TryParse(BackgroundSaturationTextBox.Text, out double text);
+            if (text < 0.0)
+            {
+                text = 0.0;
+            }
+            else if (text > 100.0)
+            {
+                text = 100.0;
+            }
+            BackgroundSaturationTextBox.Text = text.ToString();
+            DcMainWindow.BackgroundSaturation = text / 100.0;
+            dcMainWindow.ChangeBackgroundColor();
+            Canvas.SetLeft(BackgroundSaturationThumb, (200.0 * DcMainWindow.BackgroundSaturation) - 3);
+        }
+        /// <summary>
+        /// 背景色B输入取色
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BackgroundBrightnessTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            DcMainWindow dcMainWindow = Owner as DcMainWindow;
+            double.TryParse(BackgroundBrightnessTextBox.Text, out double text);
+            if (text < 0.0)
+            {
+                text = 0.0;
+            }
+            else if (text > 100.0)
+            {
+                text = 100.0;
+            }
+            BackgroundBrightnessTextBox.Text = text.ToString();
+            DcMainWindow.BackgroundBrightness = text / 100.0;
+            dcMainWindow.ChangeBackgroundColor();
+            Canvas.SetLeft(BackgroundBrightnessThumb, (200.0 * DcMainWindow.BackgroundBrightness) - 3);
+        }
+        /// <summary>
+        /// 背景色A输入取色
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BackgroundAlphaTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            DcMainWindow dcMainWindow = Owner as DcMainWindow;
+            double.TryParse(BackgroundAlphaTextBox.Text, out double text);
+            if (text < 0.0)
+            {
+                text = 0.0;
+            }
+            else if (text > 100.0)
+            {
+                text = 100.0;
+            }
+            BackgroundAlphaTextBox.Text = text.ToString();
+            DcMainWindow.BackgroundAlpha = text / 100.0;
+            dcMainWindow.ChangeBackgroundColor();
+            Canvas.SetLeft(BackgroundAlphaThumb, (200.0 * DcMainWindow.BackgroundAlpha) - 3);
+        }
     }
 }
